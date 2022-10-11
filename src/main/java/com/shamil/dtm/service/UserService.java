@@ -1,5 +1,6 @@
 package com.shamil.dtm.service;
 
+import com.shamil.dtm.dto.LoginRequest;
 import com.shamil.dtm.dto.UserRequest;
 import com.shamil.dtm.dto.UserResponse;
 import com.shamil.dtm.model.User;
@@ -8,7 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -44,6 +48,21 @@ public class UserService {
             return mapToUserResponse(user);
         }
         return null;
+    }
+
+    public Map<String, UserResponse> userLogin(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+        Map<String, UserResponse> m = new HashMap<>();
+        if (user != null) {
+            if (Objects.equals(user.getPassword(), loginRequest.getPassword())) {
+                m.put("user", mapToUserResponse(user));
+                return m;
+            }
+            m.put("password", null);
+            return m;
+        }
+        m.put("email", null);
+        return m;
     }
 
 

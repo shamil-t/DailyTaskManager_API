@@ -1,5 +1,6 @@
 package com.shamil.dtm.controller;
 
+import com.shamil.dtm.dto.LoginRequest;
 import com.shamil.dtm.dto.UserRequest;
 import com.shamil.dtm.dto.UserResponse;
 import com.shamil.dtm.service.UserService;
@@ -41,6 +42,11 @@ public class UserController {
                         + _ur.getEmail()
                         + " please login");
         return new ResponseEntity<>(data, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest) {
+        return new ResponseEntity<>(us.userLogin(loginRequest), HttpStatus.ACCEPTED);
     }
 
 }
